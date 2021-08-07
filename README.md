@@ -3,3 +3,5 @@
 graduation thesis
 
 자율주행 차량 학습에 knowledge centric networking이 합쳐진 FL(federated learning)을 적용
+
+Duncan Deveaux <deveaux@eurecom.fr> 님의 코드 참고 
