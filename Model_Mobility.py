@@ -1,6 +1,6 @@
 
 """
-Copyright (c) Duncan Deveaux <deveaux@eurecom.fr>
+Duncan Deveaux <deveaux@eurecom.fr>
 - 논문 구현 코트
 """
 #RWP, RPGM 이동성 모델 수정필요
