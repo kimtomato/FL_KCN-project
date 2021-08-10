@@ -1,6 +1,6 @@
 
 """
-Copyright (c) 2020 Duncan Deveaux <deveaux@eurecom.fr>
+ 2020 Duncan Deveaux <deveaux@eurecom.fr>
 """
 
 import os
