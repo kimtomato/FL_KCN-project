@@ -1,14 +1,15 @@
-# 수정
 import matplotlib
 import matplotlib.pyplot as plt
 import pickle
 import numpy as np
 import argparse
+import warnings
+warnings.filterwarnings('ignore')
 
 matplotlib.rcParams['pdf.fonttype'] = 42
 matplotlib.rcParams['ps.fonttype'] = 42
 
-vps = 10
+vps = 5
 
 parser = argparse.ArgumentParser(
     description='Analyze and plot results of FL/VKN simulations.')
@@ -21,8 +22,9 @@ parser.add_argument(
     required=True)
 args = parser.parse_args()
 
-# Example input:
-# -i optimized_rpgm_dump10_0_10 optimized_rpgm_dump10_10_21 optimized_rpgm_dump10_21_25
+ #Example input:
+ #-i optimized_rpgm_dump10_0_10 optimized_rpgm_dump10_10_21 optimized_rpgm_dump10_21_25
+
 
 
 stats = {'vkn': {vps: []}, 'tradi': {vps: []}}
@@ -43,8 +45,8 @@ for input_file in args.inputs:
 
 print(stats.keys())
 
-stats_vkn = stats['vkn'][10]
-stats_tradi = stats['tradi'][10]
+stats_vkn = stats['vkn'][5]
+stats_tradi = stats['tradi'][5]
 
 
 # vkn curve
