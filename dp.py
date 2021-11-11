@@ -6,7 +6,7 @@ import tensorflow as tf
 import tensorflow_federated as tff
 import tensorflow_privacy as tfp
 import matplotlib.pyplot as plt
-import seaborn as sns
+import seaborn as sns0
 
 
 
@@ -130,6 +130,7 @@ def make_plot(data_frame):
 
   dff = data_frame.rename(
       columns={'sparse_categorical_accuracy': 'Accuracy', 'loss': 'Loss'})
+  print(dff)
 
   plt.subplot(121)
   sns.lineplot(data=dff, x='Round', y='Accuracy', hue='NoiseMultiplier', palette='dark')

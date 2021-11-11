@@ -35,12 +35,12 @@ parser.add_argument(
 parser.add_argument(
     '--seed_begin',
     type=int,
-    default=0,
+    default=21,
     help='Simulations will be generated for random seeds [seed_begin;seed_end[.')
 parser.add_argument(
     '--seed_end',
     type=int,
-    default=1,
+    default=25,
     help='Simulations will be generated for random seeds [seed_begin;seed_end[.')
 
 args = parser.parse_args()
@@ -52,7 +52,7 @@ training = {}
 mobility_name = ""
 vkn_adapt_vperstep = False
 
-vps = 5  # Number of training vehicles per step
+vps = 10  # Number of training vehicles per step
 
 if args.mobility == "RWP":
 

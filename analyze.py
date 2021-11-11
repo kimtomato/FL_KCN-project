@@ -4,12 +4,14 @@ import pickle
 import numpy as np
 import argparse
 import warnings
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 warnings.filterwarnings('ignore')
 
 matplotlib.rcParams['pdf.fonttype'] = 42
 matplotlib.rcParams['ps.fonttype'] = 42
 
-vps = 5
+vps = 10
 
 parser = argparse.ArgumentParser(
     description='Analyze and plot results of FL/VKN simulations.')
@@ -45,8 +47,8 @@ for input_file in args.inputs:
 
 print(stats.keys())
 
-stats_vkn = stats['vkn'][5]
-stats_tradi = stats['tradi'][5]
+stats_vkn = stats['vkn'][vps]
+stats_tradi = stats['tradi'][vps]
 
 
 # vkn curve
@@ -93,6 +95,7 @@ def get_average_nbselect(stats, smooth):
     y = np.array(y)
     error = np.array(error)
 
+
     return (x, y, error)
 
 
@@ -115,6 +118,7 @@ def get_average_loss(stats, smooth):
     x = np.array(x)
     y = np.array(y)
     error = np.array(error)
+    print(x, y)
 
     return (x, y, error)
 
@@ -139,6 +143,7 @@ def get_average_acc(stats, smooth):
     x = np.array(x)
     y = np.array(y)
     error = np.array(error)
+    print(x,y)
 
     return (x, y, error)
 
@@ -396,8 +401,9 @@ def plot_acc_nbselect():
     plt.show()'''
 
 
-# plot_acc_nbselect() RPGM opti
+# plot_acc_nbselect() RPGM optimize
 plot_acc_comparison(stats_vkn, stats_tradi)
 plot_loss_comparison(stats_vkn, stats_tradi)
+
 #plot_nbselect_comparison(stats_vkn, stats_tradi)
 #plot_eff_comparison(stats_vkn, stats_tradi)
