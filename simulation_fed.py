@@ -358,9 +358,10 @@ class Coordinator:
 
                 # Statistics
                 if step_eval is not None:
-                    A = step_eval['eval']
+                    metrics = step_eval['eval']
                     self.statistics.register_training_evaluation(
-                        self.step_id, A['sparse_categorical_accuracy'], A['loss'])
+                        self.step_id, metrics['sparse_categorical_accuracy'], metrics['loss'])
+
 
                 self.statistics.register_step_efficiency(self.step_id, len(
                     self.updatesreceived_step) / self.vehicles_per_step)
@@ -763,6 +764,9 @@ class Simulation:
         self.world = World(size)
 
         self.vehicles = []
+
+        #RPGM
+
         if mobility['model'] == "RPGM" and 'groups' in mobility:
             self.vehicles = Vehicle.generate_vehicles_RPGM(
                 mobility['groups'], self.world)
@@ -771,13 +775,14 @@ class Simulation:
 
         else:  # Random Waypoint
             self.vehicles = Vehicle.generate_vehicles_RWP(
-                nb_vehicles, self.world)
+                nb_vehicles, self.world)  #RWP VEHICLE number
+
 
         self.fed_data = FLData()
         self.fed_training = FLTraining(
             self.fed_data.get_federated_test_data(
                 self.fed_data.get_all_test_samples_id()[
-                    0:20]))
+                    0:20]), veh_per_step)
 
         # Events generation
         use_events = event_conf['use_events']

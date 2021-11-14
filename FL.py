@@ -33,26 +33,23 @@ def make_federated_data(client_data, client_ids):
 
 
 
-def create_keras_model():
-    return tf.keras.models.Sequential([
-        tf.keras.layers.Input(shape=(784,)),
-        tf.keras.layers.Dense(10, kernel_initializer='zeros'),
-        tf.keras.layers.Softmax(),
-    ])
-
-
 emnist_train, emnist_test = tff.simulation.datasets.emnist.load_data()
 example_dataset = emnist_train.create_tf_dataset_for_client(
     emnist_train.client_ids[0])
 preprocessed_example_dataset = preprocess(example_dataset)
 
-
+#model define
 def model_fn():
     # We _must_ create a new model here, and _not_ capture it from an external
     # scope. TFF will call this within different graph contexts.
-    keras_model = create_keras_model()
+    model = tf.keras.models.Sequential([
+        tf.keras.layers.Input(shape=(784,)),
+        tf.keras.layers.Dense(10, kernel_initializer='zeros'),
+        tf.keras.layers.Softmax(),
+    ])
+
     return tff.learning.from_keras_model(
-        keras_model,
+        keras_model=model,
         input_spec=preprocessed_example_dataset.element_spec,
         loss=tf.keras.losses.SparseCategoricalCrossentropy(),
         metrics=[tf.keras.metrics.SparseCategoricalAccuracy()])
@@ -61,6 +58,8 @@ def model_fn():
 evaluation = tff.learning.build_federated_evaluation(model_fn)
 
 
+
+#produce data
 class FLData:
 
     def __init__(self):
@@ -69,7 +68,7 @@ class FLData:
     def get_nb_samples(self):
         return len(self.emnist_train.client_ids)
 
-    def get_data_samples_id(self, nb_samples):
+    def get_data_samples_id(self, nb_samples): # the number of nb_sample
         return random.choices(self.emnist_train.client_ids, k=nb_samples)
 
     def get_federated_data(self, sample_ids):
@@ -90,11 +89,13 @@ class FLDataSelector:
     def __init__(self, worlddim, mode, fl_data, cut):
 
         self.div = cut
+        #RPG
         if mode == "localized":
             print('SELECTOR: {}x{} cells'.format(cut, cut))
 
         self.dim = float(worlddim)
         self.fl_data = fl_data
+        #PWP
         if mode == "random" or mode == "localized":
             self.mode = mode
         else:
@@ -133,13 +134,30 @@ class FLTraining:
     def set_seed(seed):
         tf.random.set_seed(seed)
 
-    def __init__(self, validation_set):
+    tff.backends.native.set_local_python_execution_context(clients_per_thread=5)
+
+
+    def __init__(self, validation_set,veh_per_step):
+        a = veh_per_step['veh_per_step']
         # federated averaging
+
+
+        aggregation_factory = tff.learning.model_update_aggregator.dp_aggregator(
+            0.75, a)
+
+
+
         self.iterative_process = tff.learning.build_federated_averaging_process(
             model_fn,
-            client_optimizer_fn=lambda: tf.keras.optimizers.SGD(learning_rate=0.02),    # Client - only local update computation
-            server_optimizer_fn=lambda: tf.keras.optimizers.SGD( learning_rate=1.0))
+            #client_optimaizer => only local update computation
+            client_optimizer_fn=lambda: tf.keras.optimizers.SGD(learning_rate=0.02),
 
+            #server_oprimizer => average update adapplication
+            server_optimizer_fn=lambda: tf.keras.optimizers.SGD( learning_rate=1.0),
+            model_update_aggregation_factory=aggregation_factory
+        )
+
+        #server state construct
         self.state = self.iterative_process.initialize()
         self.validation_set = validation_set
         self.round_id = 0
@@ -148,6 +166,7 @@ class FLTraining:
 
     def training_round(self, federated_data):
 
+        #data X -> SKIP
         if len(federated_data) == 0:
             print('round {:2d}, skip.'.format(self.round_id))
 

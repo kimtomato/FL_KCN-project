@@ -4,6 +4,7 @@ import sys
 import argparse
 import pickle
 
+import pandas as pd
 from simulation_fed import Simulation
 
 
@@ -30,17 +31,17 @@ class NoStdStreams(object):
 parser = argparse.ArgumentParser(description='Run FL/VKN simulations.')
 parser.add_argument(
     '--mobility',
-    default="RWP",
+    default="RPGM",
     help='="RWP" or "RPGM". Generate simulation results using Random Waypoint or RPGM mobility.')
 parser.add_argument(
     '--seed_begin',
     type=int,
-    default=21,
+    default=0,
     help='Simulations will be generated for random seeds [seed_begin;seed_end[.')
 parser.add_argument(
     '--seed_end',
     type=int,
-    default=25,
+    default=10,
     help='Simulations will be generated for random seeds [seed_begin;seed_end[.')
 
 args = parser.parse_args()
@@ -51,6 +52,7 @@ mob = {}
 training = {}
 mobility_name = ""
 vkn_adapt_vperstep = False
+data_frame=pd.DataFrame()
 
 vps = 10  # Number of training vehicles per step
 
@@ -63,7 +65,7 @@ if args.mobility == "RWP":
         "duration": 60.0,
         "data_distribution": "random"}
     mob = {"model": 'RWP'}
-    training = {"veh_per_step": 10, "vkn_adapt_vperstep": False}
+    training = {"veh_per_step": vps, "vkn_adapt_vperstep": False}
 
     mobility_name = "rwp"
     vkn_adapt_vperstep = False
@@ -77,7 +79,7 @@ else:
     mob = {"model": 'RPGM', "groups": [650, 20, 20, 10, 10, 10, 10, 10, 5, 5]}
     training = {"veh_per_step": vps, "vkn_adapt_vperstep": True}
 
-    mobility_name = "rwp"
+    mobility_name = "rpgm"
     vkn_adapt_vperstep = True
 
 stats_vkn = {}
@@ -132,7 +134,7 @@ if vkn_adapt_vperstep:
     prefix = "optimized_"
 
 stats = {'vkn': stats_vkn, 'tradi': stats_tradi}
-filename = "{}{}_dump{}_{}_{}".format(
+filename = "{}{}_nosie_0.75_dump{}_{}_{}".format(
     prefix,
     mobility_name,
     vps,

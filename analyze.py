@@ -401,7 +401,7 @@ def plot_acc_nbselect():
     plt.show()'''
 
 
-# plot_acc_nbselect() RPGM optimize
+# plot_acc_nbselect() RPGM optimizepr
 plot_acc_comparison(stats_vkn, stats_tradi)
 plot_loss_comparison(stats_vkn, stats_tradi)
 
