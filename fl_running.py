@@ -31,7 +31,7 @@ class NoStdStreams(object):
 parser = argparse.ArgumentParser(description='Run FL/VKN simulations.')
 parser.add_argument(
     '--mobility',
-    default="RPGM",
+    default="RWP",
     help='="RWP" or "RPGM". Generate simulation results using Random Waypoint or RPGM mobility.')
 parser.add_argument(
     '--seed_begin',
@@ -50,7 +50,7 @@ args = parser.parse_args()
 events_conf = {}
 mob = {}
 training = {}
-mobility_name = ""
+mobility_name = "",
 vkn_adapt_vperstep = False
 data_frame=pd.DataFrame()
 
@@ -134,7 +134,7 @@ if vkn_adapt_vperstep:
     prefix = "optimized_"
 
 stats = {'vkn': stats_vkn, 'tradi': stats_tradi}
-filename = "{}{}_nosie_0.75_dump{}_{}_{}".format(
+filename = "{}{}_nosie_0.25_dump{}_{}_{}".format(
     prefix,
     mobility_name,
     vps,
