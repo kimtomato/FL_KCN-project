@@ -29,6 +29,7 @@ args = parser.parse_args()
 
 
 
+
 stats = {'vkn': {vps: []}, 'tradi': {vps: []}}
 
 for input_file in args.inputs:
@@ -118,7 +119,7 @@ def get_average_loss(stats, smooth):
     x = np.array(x)
     y = np.array(y)
     error = np.array(error)
-    print(x, y)
+    print(x, y,error)
 
     return (x, y, error)
 
@@ -143,7 +144,7 @@ def get_average_acc(stats, smooth):
     x = np.array(x)
     y = np.array(y)
     error = np.array(error)
-    print(x,y)
+    print(x,y,error)
 
     return (x, y, error)
 

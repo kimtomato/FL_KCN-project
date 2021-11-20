@@ -31,17 +31,17 @@ class NoStdStreams(object):
 parser = argparse.ArgumentParser(description='Run FL/VKN simulations.')
 parser.add_argument(
     '--mobility',
-    default="RWP",
+    default="RPGM",
     help='="RWP" or "RPGM". Generate simulation results using Random Waypoint or RPGM mobility.')
 parser.add_argument(
     '--seed_begin',
     type=int,
-    default=0,
+    default=21,
     help='Simulations will be generated for random seeds [seed_begin;seed_end[.')
 parser.add_argument(
     '--seed_end',
     type=int,
-    default=10,
+    default=25,
     help='Simulations will be generated for random seeds [seed_begin;seed_end[.')
 
 args = parser.parse_args()
