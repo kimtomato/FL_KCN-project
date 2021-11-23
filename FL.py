@@ -130,11 +130,15 @@ class FLDataSelector:
 
 
 class FLTraining:
+
+
     @staticmethod
     def set_seed(seed):
         tf.random.set_seed(seed)
 
     tff.backends.native.set_local_python_execution_context(clients_per_thread=5)
+
+
 
 
     def __init__(self, validation_set,veh_per_step):
@@ -164,6 +168,9 @@ class FLTraining:
 
         self.current_evaluation = None
 
+
+
+    #################33
     def training_round(self, federated_data):
 
         #data X -> SKIP
