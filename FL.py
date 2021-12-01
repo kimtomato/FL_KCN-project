@@ -147,7 +147,7 @@ class FLTraining:
 
 
         aggregation_factory = tff.learning.model_update_aggregator.dp_aggregator(
-            0.25, a)
+            noise_multiplier, a)
 
 
 

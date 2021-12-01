@@ -1,6 +1,7 @@
 import tensorflow as tf
 import tensorflow_federated as tff
 import tensorflow_privacy as tfp
+import numpy as np
 
 
 rdp_orders = ([1.25, 1.5, 1.75, 2., 2.25, 2.5, 3., 3.5, 4., 4.5] +
